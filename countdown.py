@@ -2,15 +2,21 @@ import tweepy
 import os
 from datetime import datetime
 
-# Load credentials from GitHub environment secrets
+# Load credentials from GitHub Secrets
+bearer_token = os.getenv("BEARER_TOKEN")
 consumer_key = os.getenv("API_KEY")
 consumer_secret = os.getenv("API_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
-# Authenticate with Twitter
-auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_token_secret)
-api = tweepy.API(auth)
+# Authenticate using Tweepy Client (API v2)
+client = tweepy.Client(
+    bearer_token=bearer_token,
+    consumer_key=consumer_key,
+    consumer_secret=consumer_secret,
+    access_token=access_token,
+    access_token_secret=access_token_secret
+)
 
 # Countdown logic
 release_date = datetime(2025, 8, 9)
@@ -30,4 +36,4 @@ else:
 
 # Post the tweet
 print("Tweeting:", tweet)
-api.update_status(tweet)
+client.create_tweet(text=tweet)
