@@ -25,7 +25,8 @@ days_left = (release_date - today).days
 
 # Compose tweet
 if days_left > 0:
-    tweet = f"Get Ready #DHFM's {days_left} days to go 🔁💥"
+    # Insert invisible character to avoid duplicate error
+    tweet = f"Get Ready #DHFM's {days_left}\u200B days to go 🔁💥"
 elif days_left == 0:
     tweet = "#Athadu4k Re-Release is Here! 💥\nIn Theatres Today — Celebrate #DHFM like never before 🔁🎬"
 else:
