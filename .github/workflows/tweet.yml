@@ -2,7 +2,7 @@ name: Daily Countdown Tweet
 
 on:
   schedule:
-    - cron: '40 18 * * *'  # Runs daily at 12:10 AM IST (6:40 PM UTC previous day)
+    - cron: '40 18 * * *'  # Runs daily at 12:10 AM IST (6:40 PM UTC)
   workflow_dispatch:        # Optional manual trigger
 
 jobs:
@@ -24,6 +24,7 @@ jobs:
       - name: Run countdown script
         run: python countdown.py
         env:
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
           API_KEY: ${{ secrets.API_KEY }}
           API_SECRET: ${{ secrets.API_SECRET }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
