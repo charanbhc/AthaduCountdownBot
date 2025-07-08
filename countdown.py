@@ -2,14 +2,14 @@ import tweepy
 import os
 from datetime import datetime
 
-# Load credentials from GitHub Secrets
+# Load credentials from environment variables
 bearer_token = os.getenv("BEARER_TOKEN")
 consumer_key = os.getenv("API_KEY")
 consumer_secret = os.getenv("API_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
-# Authenticate using Tweepy Client (API v2)
+# Authenticate with Tweepy
 client = tweepy.Client(
     bearer_token=bearer_token,
     consumer_key=consumer_key,
@@ -19,22 +19,21 @@ client = tweepy.Client(
 )
 
 # Countdown logic
-release_date = datetime(2025, 8, 9)
+release_date = datetime(2025, 7, 24)
 today = datetime.now()
 days_left = (release_date - today).days
 
-# Compose tweet
+# Compose tweet only if today is before or on release date
 if days_left > 0:
-    # Insert invisible character to avoid duplicate error
-    tweet = f"Get Ready #DHFM's {days_left}\u200B days to go 🔁💥"
+    tweet = f"ఆంధి ఆగమనం మరో {days_left}\u200B రోజుల్లో 💥"
 elif days_left == 0:
-    tweet = "#Athadu4k Re-Release is Here! 💥\nIn Theatres Today — Celebrate #DHFM like never before 🔁🎬"
+    tweet = "ఆంధి ఆగమనం\nWatch #HHVM in your nearest theatres"
 else:
-    tweet = (
-        "🎉 Happy Birthday to our DemiGod @urstrulymahesh!\n"
-        "#Athadu4k Re-Release was on August 9 ❤️"
-    )
+    tweet = None  # No tweet after release
 
-# Post the tweet
-print("Tweeting:", tweet)
-client.create_tweet(text=tweet)
+# Post tweet if applicable
+if tweet:
+    print("Tweeting:", tweet)
+    client.create_tweet(text=tweet)
+else:
+    print("No tweet today.")
