@@ -18,26 +18,26 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
-# Countdown logic
-release_date = datetime(2025, 7, 24)
+# Set the release date
+release_date = datetime(2025, 8, 14)
 today = datetime.now()
 days_left = (release_date - today).days
 
-# List of invisible characters to rotate daily (ensures uniqueness)
+# Rotate invisible characters to avoid duplicate tweet errors
 invisible_chars = ['\u200B', '\u200C', '\u200D', '\u2060', '\uFEFF']
-variation = invisible_chars[days_left % len(invisible_chars)]
+variation = invisible_chars[days_left % len(invisible_chars)] if days_left >= 0 else ''
 
-# Compose tweet only if today is before or on release date
+# Compose tweet
 if days_left > 0:
-    tweet = f"ఆంధి ఆగమనం మరో {days_left}{variation} రోజుల్లో 💥"
+    tweet = f"#War2 Storm in {days_left}{variation} days 🐅"
 elif days_left == 0:
-    tweet = "ఆంధి ఆగమనం\nWatch #War2 in your nearest theatres"
+    tweet = "War2 Day\nWatch #War2 in your nearest theatres"
 else:
-    tweet = None  # No tweet after release
+    tweet = None  # No tweet after release day
 
-# Post tweet if applicable
+# Post the tweet if one was created
 if tweet:
-    print("Tweeting:", tweet)
+    print("Tweeting:", repr(tweet))  # Shows invisible char in logs
     client.create_tweet(text=tweet)
 else:
     print("No tweet today.")
