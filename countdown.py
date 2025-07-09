@@ -31,7 +31,7 @@ variation = invisible_chars[days_left % len(invisible_chars)]
 if days_left > 0:
     tweet = f"ఆంధి ఆగమనం మరో {days_left}{variation} రోజుల్లో 💥"
 elif days_left == 0:
-    tweet = "ఆంధి ఆగమనం\nWatch #HHVM in your nearest theatres"
+    tweet = "ఆంధి ఆగమనం\nWatch #War2 in your nearest theatres"
 else:
     tweet = None  # No tweet after release
 
