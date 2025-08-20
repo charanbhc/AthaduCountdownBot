@@ -29,7 +29,7 @@ variation = invisible_chars[days_left % len(invisible_chars)] if days_left >= 0 
 
 # Compose tweet
 if days_left > 0:
-    tweet = f"#OG ఆగమనం మరో {days_left}{variation} రోజుల్లో 🐆"
+    tweet = f"#OG ఆగమనం మరో {days_left}{variation} రోజుల్లో 🐆 https://x.com/i/status/1952721407663657366/video/1 "
 elif days_left == 0:
     tweet = "#TheyCallHimOG Day\nWatch #TheyCallHimOG in your nearest theatres"
 else:
