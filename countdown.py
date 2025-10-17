@@ -1,6 +1,6 @@
 import tweepy
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Load credentials from environment variables
 bearer_token = os.getenv("BEARER_TOKEN")
@@ -9,7 +9,7 @@ consumer_secret = os.getenv("API_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
-# Authenticate with Tweepy
+# Authenticate with Tweepy Client (v2)
 client = tweepy.Client(
     bearer_token=bearer_token,
     consumer_key=consumer_key,
@@ -18,26 +18,30 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
-# Set the release date
-release_date = datetime(2025, 9, 25)
-today = datetime.now()
-days_left = (release_date - today).days
+# Set the release date (UTC for accuracy)
+release_date = datetime(2025, 1, 9, tzinfo=timezone.utc)
+today = datetime.now(timezone.utc)
+days_left = (release_date.date() - today.date()).days
 
 # Rotate invisible characters to avoid duplicate tweet errors
 invisible_chars = ['\u200B', '\u200C', '\u200D', '\u2060', '\uFEFF']
 variation = invisible_chars[days_left % len(invisible_chars)] if days_left >= 0 else ''
 
-# Compose tweet
+# Compose the tweet
 if days_left > 0:
-    tweet = f"#OG ఆగమనం మరో {days_left}{variation} రోజుల్లో 🐆 https://x.com/i/status/1952721407663657366/video/1 "
+    tweet = f"{days_left}{variation} 👑"
 elif days_left == 0:
-    tweet = "#TheyCallHimOG Day\nWatch #TheyCallHimOG in your nearest theatres"
+    tweet = "#TheRajaSaab Arrival 😈"
 else:
     tweet = None  # No tweet after release day
 
 # Post the tweet if one was created
 if tweet:
-    print("Tweeting:", repr(tweet))  # Shows invisible char in logs
-    client.create_tweet(text=tweet)
+    print("Tweeting:", repr(tweet))  # shows invisible char in logs
+    try:
+        client.create_tweet(text=tweet)
+        print("Tweet posted successfully.")
+    except Exception as e:
+        print("Error posting tweet:", e)
 else:
     print("No tweet today.")
