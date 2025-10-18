@@ -19,7 +19,7 @@ client = tweepy.Client(
 )
 
 # Set the release date
-release_date = datetime(2025, 10, 25)
+release_date = datetime(2026, 1, 9)
 today = datetime.now()
 days_left = (release_date - today).days
 
@@ -30,9 +30,9 @@ variation = invisible_chars[days_left % len(invisible_chars)] if days_left >= 0 
 # Compose tweet
 if days_left > 0:
     
-    tweet = f"#OG ఆగమనం మరో {days_left}{variation} రోజుల్లో 🐆 https://x.com/i/status/1952721407663657366/video/1 "
+    tweet = f" {days_left}{variation} 👑"
 elif days_left == 0:
-    tweet = "#TheyCallHimOG Day\nWatch #TheyCallHimOG in your nearest theatres"
+    tweet = "#TheRajaSaab Arrival 😈"
 else:
     tweet = None  # No tweet after release day
 
