@@ -1,6 +1,6 @@
 import tweepy
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Load credentials from environment variables
 bearer_token = os.getenv("BEARER_TOKEN")
@@ -18,10 +18,14 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
-# Set the release date
-release_date = datetime(2026, 1, 9)
-today = datetime.now()
-days_left = (release_date - today).days
+# Set the release date with UTC timezone and time at start of day
+release_date = datetime(2026, 1, 9, tzinfo=timezone.utc)
+
+# Get current date in UTC timezone (to avoid timezone issues)
+today = datetime.now(timezone.utc)
+
+# Calculate days left ignoring hours/minutes by using date only
+days_left = (release_date.date() - today.date()).days
 
 # Rotate invisible characters to avoid duplicate tweet errors
 invisible_chars = ['\u200B', '\u200C', '\u200D', '\u2060', '\uFEFF']
@@ -29,7 +33,6 @@ variation = invisible_chars[days_left % len(invisible_chars)] if days_left >= 0 
 
 # Compose tweet
 if days_left > 0:
-    
     tweet = f" {days_left}{variation} 👑"
 elif days_left == 0:
     tweet = "#TheRajaSaab Arrival 😈"
