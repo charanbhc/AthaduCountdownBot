@@ -2,7 +2,7 @@ name: Daily Countdown Tweet
 
 on:
   schedule:
-    - cron: '30 18 * * *'  # Runs daily at 9:00 PM IST (3:30 PM UTC)
+    - cron: '30 18 * * *'  # Runs daily at 12:00 AM IST (6:30 PM UTC)
   workflow_dispatch:        # Optional manual trigger
 
 jobs:
