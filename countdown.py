@@ -1,30 +1,15 @@
 import tweepy
 import os
-from datetime import datetime, timezone
+from datetime import datetime
 
-# === CONFIG ===
-RELEASE_DATE = datetime(2025, 1, 9, tzinfo=timezone.utc)
-# ===============
-
-# Load credentials from environment (GitHub Actions secrets!)
+# Load credentials from environment variables
 bearer_token = os.getenv("BEARER_TOKEN")
 consumer_key = os.getenv("API_KEY")
 consumer_secret = os.getenv("API_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
 
-def ensure(val, name):
-    if not val:
-        raise ValueError(f"Missing environment variable: {name}")
-
-# Assert all required secrets are present
-ensure(bearer_token, "BEARER_TOKEN")
-ensure(consumer_key, "API_KEY")
-ensure(consumer_secret, "API_SECRET")
-ensure(access_token, "ACCESS_TOKEN")
-ensure(access_token_secret, "ACCESS_TOKEN_SECRET")
-
-# Authenticate Tweepy client (OAuth 1.0a + OAuth2 bearer)
+# Authenticate with Tweepy
 client = tweepy.Client(
     bearer_token=bearer_token,
     consumer_key=consumer_key,
@@ -33,30 +18,27 @@ client = tweepy.Client(
     access_token_secret=access_token_secret
 )
 
-# Calculate remaining days
-today = datetime.now(timezone.utc)
-days_left = (RELEASE_DATE.date() - today.date()).days
+# Set the release date
+release_date = datetime(2025, 9, 25)
+today = datetime.now()
+days_left = (release_date - today).days
 
-# Add invisible character for duplicate tweet prevention
+# Rotate invisible characters to avoid duplicate tweet errors
 invisible_chars = ['\u200B', '\u200C', '\u200D', '\u2060', '\uFEFF']
 variation = invisible_chars[days_left % len(invisible_chars)] if days_left >= 0 else ''
 
 # Compose tweet
 if days_left > 0:
-    tweet = f"{days_left}{variation} 👑"
+    
+    tweet = f"#OG ఆగమనం మరో {days_left}{variation} రోజుల్లో 🐆 https://x.com/i/status/1952721407663657366/video/1 "
 elif days_left == 0:
-    tweet = "#TheRajaSaab Arrival 😈"
+    tweet = "#TheyCallHimOG Day\nWatch #TheyCallHimOG in your nearest theatres"
 else:
-    tweet = None
+    tweet = None  # No tweet after release day
 
-# Post tweet if needed
+# Post the tweet if one was created
 if tweet:
-    print("Tweeting:", repr(tweet))
-    try:
-        response = client.create_tweet(text=tweet)
-        # Print tweet ID for debugging
-        print("✅ Tweet posted. Tweet ID:", response.data.get('id') if hasattr(response, 'data') else response)
-    except Exception as e:
-        print("❌ Error posting tweet:", repr(e))
+    print("Tweeting:", repr(tweet))  # Shows invisible char in logs
+    client.create_tweet(text=tweet)
 else:
     print("No tweet today.")
