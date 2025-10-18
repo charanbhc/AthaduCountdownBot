@@ -19,7 +19,7 @@ client = tweepy.Client(
 )
 
 # Set the release date
-release_date = datetime(2025, 9, 25)
+release_date = datetime(2025, 10, 25)
 today = datetime.now()
 days_left = (release_date - today).days
 
